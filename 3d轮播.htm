@@ -108,10 +108,10 @@
 <body>
     <div class="shell">
         <div class="box">
-            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (1).jpg" alt=""></div>
-            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (2).jpg" alt=""></div>
-            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (3).jpg" alt=""></div>
-            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg.jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="./timg (1).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="./timg (2).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="./timg (3).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="./timg.jpg" alt=""></div>
         </div>
         <div class="le">
             < </div>
@@ -221,16 +221,19 @@
                             }
                         }
                         document.onmouseup = function () {
+                          
                             if (sty < mvy) {
                                 down1(Math.abs(mvy - sty));
                             } else {
                                 up1(Math.abs(sty - mvy));
                             }
-
                             document.onmousemove = null;
                             document.onmouseup = null;
+                            
                         }
+                         
                     }
+                    
                 }
 
             }    
