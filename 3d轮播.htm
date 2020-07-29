@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .shell {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            margin: 0 auto;
+
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 图像盒子 */
+        .box {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            /* bottom: 0 ; */
+            margin: auto;
+            transform-origin: center center 150px;
+            transition: transform 3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .i1 {
+            position: absolute;
+            top: 0;
+            width: 300px;
+            height: 300px;
+        }
+
+        .i1 img {
+            width: 100%;
+            height: 100%;
+
+        }
+
+        /* 图像的旋转处理 */
+        .box div:nth-child(4) {
+            transform: rotateX(90deg);
+            transform-origin: top;
+        }
+
+        .box div:nth-child(3) {
+            transform: rotateX(-90deg);
+            transform-origin: bottom;
+        }
+
+        .box div:nth-child(2) {
+
+            transform: translateZ(300px);
+
+        }
+
+        .box div:nth-child(1) {
+            transform: rotateX(-180deg);
+            transform-origin: center;
+        }
+
+        /* 按钮们 */
+        .btns {
+            position: absolute;
+            left: 23%;
+            bottom: 50px;
+        }
+
+        .le {
+            position: absolute;
+            top: 230px;
+            left: 50px;
+            cursor: pointer;
+        }
+
+        .rg {
+            position: absolute;
+            top: 230px;
+            right: 50px;
+            cursor: pointer;
+        }
+
+        .btns li {
+            width: 20px;
+            height: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            list-style: none;
+            background: rgba(0, 0, 0, 0.34);
+            float: left;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .btns li:first-child {
+            background: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <div class="box">
+            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (1).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (2).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg (3).jpg" alt=""></div>
+            <div class="i1" ondragstart="return false;"><img src="../../紫霞/timg.jpg" alt=""></div>
+        </div>
+        <div class="le">
+            < </div>
+                <div class="rg">
+                    >
+                </div>
+                <div class="btns">
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>4</li>
+                    </ul>
+                </div>
+        </div>
+        <script>
+
+            window.onload = function () {
+                var box = document.querySelector(".box")
+                var le = document.querySelector(".le")
+                var rg = document.querySelector(".rg")
+                var btns = document.querySelectorAll(".btns li")
+                var shell = document.querySelector(".shell")
+                var an = 90;
+                var num = 0;
+                var i = 0;
+                // 针对右键和上滑
+                var a = function () {
+
+                    var current = num;
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "rgba(0, 0, 0, 0.34)"
+                    }
+                    btns[current % 4].style.background = "rgba(0,0,0,0.8)"
+                }
+                // 针对左键和下滑
+                var b = function () {
+                    var current1 = num + 4444;
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].style.background = "rgba(0, 0, 0, 0.34)"
+                    }
+                    btns[(current1) % 4].style.background = "rgba(0,0,0,0.8)";
+                }
+                //自动
+                var t = () => {
+
+                    num++;
+                    box.style.transform = "rotateX(" + num * an + "deg)";
+                    a();
+
+                }
+                var run = setInterval(t, 3000);
+                shell.onmouseover = function () {
+                    clearInterval(run);
+                }
+                shell.onmouseout = function () {
+                    run = setInterval(t, 3000);
+                }
+                //使得不获得焦点不乱动
+                window.onblur = function () {
+                    clearInterval(run);
+                }
+                //左键
+                le.onclick = function () {
+                    num--;
+                    console.log(num)
+                    box.style.transform = "rotateX(" + num * an + "deg)";
+                    b();
+                }
+                //右键
+                rg.onclick = function () {
+                    num++;
+                    box.style.transform = "rotateX(" + num * an + "deg)";
+                    console.log(btns)
+                    a()
+
+                }
+                //点击实现轮播
+                for (let i = 0; i < btns.length; i++) {
+                    btns[i].onclick = function () {
+                        num += (Math.abs(num) % 4 - i);
+                        box.style.transform = "rotateX(" + num * an + "deg)";
+                        for (let i = 0; i < btns.length; i++) {
+                            btns[i].style.background = "rgba(0, 0, 0, 0.34)"
+                        }
+                        btns[i].style.background = "rgba(0,0,0,0.8)"
+                    }
+                }
+                //滑动函数 
+                mous(box, function (val) { console.log(val); box.style.transform = "rotateX(" + -val + "deg)"; },
+                    function (val) { box.style.transform = "rotateX(" + val + "deg)"; },
+                    function (val) { if (val > 50) num--; box.style.transform = "rotateX(" + num * an + "deg)"; b() },
+                    function (val) { if (val > 50) num++; box.style.transform = "rotateX(" + num * an + "deg)"; a() })
+                //滑动事件
+                function mous(obj, down, up, down1, up1) {
+                    obj.onmousedown = function (ev) {
+
+                        var sty = ev.clientY;
+                        var mvy;
+                        document.onmousemove = function (ev) {
+
+                            mvy = ev.clientY
+                            if (sty < mvy) {
+                                down(Math.abs(mvy - sty));
+                            } else {
+                                up(Math.abs(sty - mvy));
+                            }
+                        }
+                        document.onmouseup = function () {
+                            if (sty < mvy) {
+                                down1(Math.abs(mvy - sty));
+                            } else {
+                                up1(Math.abs(sty - mvy));
+                            }
+
+                            document.onmousemove = null;
+                            document.onmouseup = null;
+                        }
+                    }
+                }
+
+            }    
+        </script>
+</body>
+
+</html>
